@@ -16,7 +16,7 @@ namespace TarifacaoEnergiaEletrica
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Fabrica", action = "CadastroFabrica", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
