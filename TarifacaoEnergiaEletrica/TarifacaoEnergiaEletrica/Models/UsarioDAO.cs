@@ -64,7 +64,7 @@ namespace TarifacaoEnergiaEletrica.Models
             return instancia;
         }
 
-        public Usuario ObterUsuarioPorEmailSenha(String email, String senha)
+        public Usuario Login(String email, String senha)
         {
             String procNome = "sp_GerenciaUsuario";
             Usuario u = new Usuario();
