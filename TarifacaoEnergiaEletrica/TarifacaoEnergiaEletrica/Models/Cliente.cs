@@ -8,10 +8,5 @@ namespace TarifacaoEnergiaEletrica.Models
 {
     class Cliente
     {
-        public int IdCliente { get; set; }
-        public String Nome { get; set; }
-        public String CNPJ { get; set; }
-        public String RazaoSocial { get; set; }
-        public String Endereco { get; set; }
     }
 }

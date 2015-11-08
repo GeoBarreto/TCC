@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarifacaoEnergiaEletrica", "TarifacaoEnergiaEletrica\TarifacaoEnergiaEletrica.csproj", "{211E2723-017D-4F4F-842C-21D701755B1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarifacaoEnergiaEletrica", "TarifacaoEnergiaEletrica\TarifacaoEnergiaEletrica.csproj", "{621A46B8-36FB-4D78-94A2-E22822B829A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{211E2723-017D-4F4F-842C-21D701755B1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{211E2723-017D-4F4F-842C-21D701755B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{211E2723-017D-4F4F-842C-21D701755B1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{211E2723-017D-4F4F-842C-21D701755B1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{621A46B8-36FB-4D78-94A2-E22822B829A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{621A46B8-36FB-4D78-94A2-E22822B829A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{621A46B8-36FB-4D78-94A2-E22822B829A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{621A46B8-36FB-4D78-94A2-E22822B829A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
