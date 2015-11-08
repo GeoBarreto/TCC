@@ -9,7 +9,8 @@
 @using (Html.BeginForm("Login", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken() //prevenção contra CSRF
-                            @Html.ValidationSummary(true)
+    @Html.ValidationSummary(true)
+
     if (@ViewBag.Message != null)
     {
         <div style="border:1px solid red">

@@ -35,27 +35,32 @@ namespace TarifacaoEnergiaEletrica.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(Usuario u)
         {
             if (ModelState.IsValid)
             {
                 Usuario autenticado = UsuarioDAO.ObterInstancia().Login(u.Email, u.Senha);
-                Session["NomeUsuario"] = autenticado.Nome;
-                Session["IdCliente"] = autenticado.IdCliente;
-                return RedirectToAction("ListaFabrica");
-            }
-            return RedirectToAction("Login");
-        }
 
-        public class FabricaController : Controller
-        {
-            // GET: Fabrica
-            public ActionResult ListaFabricas()
-            {
-                ArrayList fabricas = FabricaDAO.ObterInstancia().ObterFabricasPorCliente(Convert.ToInt32(Session["IdCliente"]);
-                ViewData["fabricas"] = fabricas;
-                return View();
+                if (autenticado != null)
+                {
+                    Session["NomeUsuario"] = autenticado.Nome;
+                    Session["IdCliente"] = autenticado.IdCliente;
+                    return RedirectToAction("ListaFabricas");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Usuario ou Senha invalidos!");
+                    return View(u);
+                }
             }
+            return View(u);
+        }
+        
+        public ActionResult ListaFabricas()
+        {
+            List<Fabrica> fabricas = FabricaDAO.ObterInstancia().ObterFabricasPorCliente(Convert.ToInt32(Session["IdCliente"]));
+            return View(fabricas);
         }
     }
 }

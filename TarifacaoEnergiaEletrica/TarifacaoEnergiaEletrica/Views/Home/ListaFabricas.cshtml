@@ -1,16 +1,30 @@
-﻿@model TarifacaoEnergiaEletrica.Models.Usuario
-@model TarifacaoEnergiaEletrica.Models.Fabrica
+﻿@model List<TarifacaoEnergiaEletrica.Models.Fabrica>
 @{
-    ViewBag.Title = "ListaFabricas";
+    ViewBag.Title = "Lista Fabricas";
 }
 
 <h2>ListaFabricas</h2>
-<h3>Olá 
-    @Session["NomeUsuario"]
 
-</h3>
+<table>
+    <tr>
+        <th>CNPJ</th>
+        <th>Endereco</th>
+        <th>Contas</th>
+        <th>Editar</th>
+    </tr>
 
-@foreach(var item in (string[]) ViewData["ItemsList"])
-{
-    
-}
+    @if (Model != null)
+    {
+        foreach (var f in Model)
+        {
+            <tr>
+                <td>@f.CNPJ</td>
+                <td>@f.Endereco</td>
+                <td>@Html.ActionLink("ListaContas", "Home", new { id = @f.IdFabrica})</td>
+            </tr>
+        }
+    }
+</table>
+
+<div>@Html.ActionLink("CadastroFabrica", "CadastroFabrica")</div>
+

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace TarifacaoEnergiaEletrica.Models
 {
@@ -33,7 +31,7 @@ namespace TarifacaoEnergiaEletrica.Models
 
             cp_IdFabrica = "id_fabrica";
             cp_IdCliente = "id_cliente";
-            cp_CNPJ = "cnpj";
+            cp_CNPJ = "cnpj_fabrica";
             cp_Endereco = "endereco";
         }
 
@@ -171,18 +169,20 @@ namespace TarifacaoEnergiaEletrica.Models
             return status;
         }
 
-        public ArrayList ObterFabricasPorCliente(int IdCliente)
+        public List<Fabrica> ObterFabricasPorCliente(int IdCliente)
         {
-            ArrayList fabricas = new ArrayList();
-            String procNome = "sp_GerenciaFabrica";
+            List<Fabrica> fabricas = new List<Fabrica>();
+            //String procNome = "sp_GerenciaFabrica";
+            String procNome = "SELECT * FROM fabricas WHERE " + cp_IdCliente + " = " + prm_IdCliente;
             Fabrica f;
 
             using (con = ConexaoBD.ObterConexao())
             {
                 cmd = new SqlCommand(procNome, con);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue(prm_IdCliente, IdCliente);
+                cmd.Parameters.Add(prm_IdCliente, SqlDbType.Int).Value = IdCliente;
 
                 con.Open();
                 using (SqlDataReader resultado = cmd.ExecuteReader())

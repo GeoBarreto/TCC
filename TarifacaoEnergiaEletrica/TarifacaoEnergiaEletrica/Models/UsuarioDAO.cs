@@ -70,35 +70,46 @@ namespace TarifacaoEnergiaEletrica.Models
             //String procNome = "sp_GerenciaUsuario";
             String procNome = "SELECT * FROM usuarios WHERE " + cp_Email + " = " + prm_Email + " AND " + cp_Senha + " = " + prm_Senha + " AND ativo = 'true';";
 
-            Usuario u = new Usuario();
 
-            using (con = ConexaoBD.ObterConexao())
+            Usuario u = new Usuario(); ;
+
+            if (email != null && senha != null)
             {
-                cmd = new SqlCommand(procNome, con);
-                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.Parameters.AddWithValue("@FUNCAO", "1");
-                cmd.Parameters.Add(prm_Email, SqlDbType.VarChar).Value = email;
-                cmd.Parameters.Add(prm_Senha, SqlDbType.VarChar).Value = senha;
-
-                cmd.Connection.Open();
-                SqlDataReader resultado = cmd.ExecuteReader();
-                if (resultado.Read())
+                using (con = ConexaoBD.ObterConexao())
                 {
-                    using (resultado)
+                    cmd = new SqlCommand(procNome, con);
+                    //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    //cmd.Parameters.AddWithValue("@FUNCAO", "1");
+                    cmd.Parameters.Add(prm_Email, SqlDbType.VarChar).Value = email;
+                    cmd.Parameters.Add(prm_Senha, SqlDbType.VarChar).Value = senha;
+
+                    con.Open();
+                    SqlDataReader resultado = cmd.ExecuteReader();
+                    if (resultado.Read())
                     {
-                        //u.Email = resultado.GetString(resultado.GetOrdinal(cp_Email));
-                        u.IdCliente = resultado.GetInt32(resultado.GetOrdinal(cp_IdCliente));
-                        //u.CPF = resultado.GetString(resultado.GetOrdinal(cp_CPF));
-                        u.Nome = resultado.GetString(resultado.GetOrdinal(cp_Nome));
-                        //u.Senha = resultado.GetString(resultado.GetOrdinal(cp_Senha));
-                        //u.Ativo = resultado.GetBoolean(resultado.GetOrdinal(cp_Ativo));
-                        //u.Tipo = resultado.GetInt32(resultado.GetOrdinal(cp_Tipo));
-                        //u.DataRegistro = resultado.GetDateTime(resultado.GetOrdinal(cp_DataRegistro));
+                        using (resultado)
+                        {
+                            //u.Email = resultado.GetString(resultado.GetOrdinal(cp_Email));
+                            u.IdCliente = resultado.GetInt32(resultado.GetOrdinal(cp_IdCliente));
+                            //u.CPF = resultado.GetString(resultado.GetOrdinal(cp_CPF));
+                            u.Nome = resultado.GetString(resultado.GetOrdinal(cp_Nome));
+                            //u.Senha = resultado.GetString(resultado.GetOrdinal(cp_Senha));
+                            //u.Ativo = resultado.GetBoolean(resultado.GetOrdinal(cp_Ativo));
+                            //u.Tipo = resultado.GetInt32(resultado.GetOrdinal(cp_Tipo));
+                            //u.DataRegistro = resultado.GetDateTime(resultado.GetOrdinal(cp_DataRegistro));
+                        }
+                    }
+                    else
+                    {
+                        u = null;
                     }
                 }
             }
-
+            else
+            {
+                u = null;
+            }
             return u;
 
         }

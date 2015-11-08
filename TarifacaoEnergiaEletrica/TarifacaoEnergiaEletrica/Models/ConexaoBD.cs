@@ -14,10 +14,7 @@ namespace TarifacaoEnergiaEletrica.Models
 
         public static SqlConnection ObterConexao()
         {
-            if (con == null)
-            {
-                con = new SqlConnection(ConfigurationManager.ConnectionStrings["TEE"].ToString());
-            }
+            con = new SqlConnection(ConfigurationManager.ConnectionStrings["TEE"].ToString());
             return con;
         }
     }
