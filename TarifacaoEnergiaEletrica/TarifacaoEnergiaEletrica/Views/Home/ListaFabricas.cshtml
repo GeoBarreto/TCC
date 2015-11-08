@@ -1,0 +1,16 @@
+﻿@model TarifacaoEnergiaEletrica.Models.Usuario
+@model TarifacaoEnergiaEletrica.Models.Fabrica
+@{
+    ViewBag.Title = "ListaFabricas";
+}
+
+<h2>ListaFabricas</h2>
+<h3>Olá 
+    @Session["NomeUsuario"]
+
+</h3>
+
+@foreach(var item in (string[]) ViewData["ItemsList"])
+{
+    
+}
