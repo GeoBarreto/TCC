@@ -41,17 +41,18 @@ namespace TarifacaoEnergiaEletrica.Controllers
             {
                 Usuario autenticado = UsuarioDAO.ObterInstancia().Login(u.Email, u.Senha);
                 Session["NomeUsuario"] = autenticado.Nome;
-                return RedirectToAction("ListaFabrica", autenticado);
+                Session["IdCliente"] = autenticado.IdCliente;
+                return RedirectToAction("ListaFabrica");
             }
-            return View();
+            return RedirectToAction("Login");
         }
 
         public class FabricaController : Controller
         {
             // GET: Fabrica
-            public ActionResult ListaFabricas(Usuario u)
+            public ActionResult ListaFabricas()
             {
-                ArrayList fabricas = FabricaDAO.ObterInstancia().ObterFabricasPorCliente(u.IdCliente);
+                ArrayList fabricas = FabricaDAO.ObterInstancia().ObterFabricasPorCliente(Convert.ToInt32(Session["IdCliente"]);
                 ViewData["fabricas"] = fabricas;
                 return View();
             }

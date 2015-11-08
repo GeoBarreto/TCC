@@ -16,7 +16,7 @@ namespace TarifacaoEnergiaEletrica.Models
         {
             if (con == null)
             {
-                con = new SqlConnection(ConfigurationManager.ConnectionStrings["STEL"].ToString());
+                con = new SqlConnection(ConfigurationManager.ConnectionStrings["TEE"].ToString());
             }
             return con;
         }
