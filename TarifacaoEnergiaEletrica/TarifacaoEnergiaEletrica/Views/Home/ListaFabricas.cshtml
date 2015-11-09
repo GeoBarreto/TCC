@@ -1,10 +1,21 @@
 ﻿@model List<TarifacaoEnergiaEletrica.Models.Fabrica>
 @{
     ViewBag.Title = "Lista Fabricas";
+    WebGrid grid = new WebGrid(Model);
 }
 
 <h2>ListaFabricas</h2>
 
+@grid.GetHtml(columns: new []
+{
+    grid.Column("CNPJ"),
+    grid.Column("Endereco"),
+    grid.Column(header: "", format:(item) => Html.ActionLink("Ver contas", "VisualizarContas", new { id = item.IdFabrica})),
+    grid.Column(header: "", format:(item) => Html.ActionLink("Editar", "EditarFabrica", new { id = item.IdFabrica})),
+    grid.Column(header: "", format:(item) => Html.ActionLink("Excluir", "ExcluirFabrica", new { id = item.IdFabrica})),
+})
+
+@*
 <table>
     <tr>
         <th>CNPJ</th>
@@ -12,7 +23,7 @@
         <th>Contas</th>
         <th>Editar</th>
     </tr>
-
+    
     @if (Model != null)
     {
         foreach (var f in Model)
@@ -25,6 +36,6 @@
         }
     }
 </table>
-
+*@
 <div>@Html.ActionLink("Nova Fabrica", "CadastroFabrica")</div>
 

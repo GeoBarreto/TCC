@@ -71,7 +71,7 @@ namespace TarifacaoEnergiaEletrica.Models
             String procNome = "SELECT * FROM usuarios WHERE " + cp_Email + " = " + prm_Email + " AND " + cp_Senha + " = " + prm_Senha + " AND ativo = 'true';";
 
 
-            Usuario u = new Usuario(); ;
+            Usuario u = new Usuario();
 
             if (email != null && senha != null)
             {

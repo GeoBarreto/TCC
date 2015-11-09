@@ -27,7 +27,7 @@ namespace TarifacaoEnergiaEletrica.Models
         public FabricaDAO()
         {
             prm_IdFabrica = "@ID_FABRICA";
-            prm_IdCliente = "ID_CLIENTE";
+            prm_IdCliente = "@ID_CLIENTE";
             prm_CNPJ = "@CNPJ";
             prm_Endereco = "@ENDERECO";
             prm_IdDistribuidora = "@ID_DISTRIBUIDORA";
@@ -118,8 +118,8 @@ namespace TarifacaoEnergiaEletrica.Models
                                  cp_CNPJ + "," +
                                  cp_Endereco + "," +
                                  cp_IdCliente + "," +
-                                 cp_IdDistribuidora + "," +
-                                 ") Values (" +
+                                 cp_IdDistribuidora + ")" +
+                                 " Values (" +
                                  prm_CNPJ + "," +
                                  prm_Endereco + "," +
                                  prm_IdCliente + "," +
@@ -133,7 +133,6 @@ namespace TarifacaoEnergiaEletrica.Models
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 //cmd.Parameters.AddWithValue("@FUNCAO", "3");
-                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = f.IdFabrica;
                 cmd.Parameters.Add(prm_IdCliente, SqlDbType.Int).Value = f.IdCliente;
                 cmd.Parameters.Add(prm_CNPJ, SqlDbType.VarChar).Value = f.CNPJ;
                 cmd.Parameters.Add(prm_Endereco, SqlDbType.VarChar).Value = f.Endereco;
