@@ -19,14 +19,14 @@
     }
     <table>
         <tr>
-            <td>@Html.LabelFor(a => a.Email)</td>
-            <td>@Html.TextBoxFor(a => a.Email)</td>
-            <td>@Html.ValidationMessageFor(a => a.Email)</td>
+            <td>@Html.LabelFor(Model => Model.Email)</td>
+            <td>@Html.TextBoxFor(Model => Model.Email)</td>
+            <td>@Html.ValidationMessageFor(Model => Model.Email)</td>
         </tr>
         <tr>
-            <td>@Html.LabelFor(a => a.Senha)</td>
-            <td>@Html.PasswordFor(a => a.Senha)</td>
-            <td>@Html.ValidationMessageFor(a => a.Senha)</td>
+            <td>@Html.LabelFor(Model => Model.Senha)</td>
+            <td>@Html.PasswordFor(Model => Model.Email)</td>
+            <td>@Html.ValidationMessageFor(Model => Model.Email)</td>
         </tr>
         <tr>
             <td><input type="submit" value="Login" /></td>

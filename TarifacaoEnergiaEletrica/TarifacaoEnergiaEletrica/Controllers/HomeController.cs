@@ -62,5 +62,31 @@ namespace TarifacaoEnergiaEletrica.Controllers
             List<Fabrica> fabricas = FabricaDAO.ObterInstancia().ObterFabricasPorCliente(Convert.ToInt32(Session["IdCliente"]));
             return View(fabricas);
         }
+
+        public ActionResult CadastroFabrica()
+        {
+            List<Distribuidora> d = DistribuidoraDAO.ObterInstancia().ObterDistribuidoras();
+            ViewBag.distribuidoras = new SelectList(d, "IdDistribuidora", "Nome");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CadastroFabrica(Fabrica f)
+        {
+            int status;
+            string idDistribuidora = Request.Form["distribuidoras"].ToString();
+            if (idDistribuidora != null)
+            {
+                f.IdDistribuidora = Convert.ToInt32(idDistribuidora);
+                f.IdCliente = Convert.ToInt32(Session["IdCliente"]);
+                status = FabricaDAO.ObterInstancia().SalvarFabrica(f);
+                if(status == 0)
+                {
+                    ModelState.AddModelError(string.Empty,"Não foi possivel realizar o cadastro");
+                }
+                return RedirectToAction("ListaFabricas");
+            }
+            return View(f);
+        }
     }
 }

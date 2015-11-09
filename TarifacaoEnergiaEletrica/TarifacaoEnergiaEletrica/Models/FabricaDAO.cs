@@ -16,11 +16,13 @@ namespace TarifacaoEnergiaEletrica.Models
         private String prm_IdCliente;
         private String prm_CNPJ;
         private String prm_Endereco;
+        private String prm_IdDistribuidora;
         //campos
         private String cp_IdFabrica;
         private String cp_IdCliente;
         private String cp_CNPJ;
         private String cp_Endereco;
+        private String cp_IdDistribuidora;
 
         public FabricaDAO()
         {
@@ -28,11 +30,13 @@ namespace TarifacaoEnergiaEletrica.Models
             prm_IdCliente = "ID_CLIENTE";
             prm_CNPJ = "@CNPJ";
             prm_Endereco = "@ENDERECO";
+            prm_IdDistribuidora = "@ID_DISTRIBUIDORA";
 
             cp_IdFabrica = "id_fabrica";
             cp_IdCliente = "id_cliente";
             cp_CNPJ = "cnpj_fabrica";
             cp_Endereco = "endereco";
+            cp_IdDistribuidora = "id_distribuidora";
         }
 
         public static FabricaDAO ObterInstancia()
@@ -109,30 +113,49 @@ namespace TarifacaoEnergiaEletrica.Models
         public int SalvarFabrica(Fabrica f)
         {
             SqlParameter parametroSaida;
-            String procNome = "sp_GerenciaFabrica";
+            //String procNome = "sp_GerenciaFabrica";
+            String procNome = "INSERT INTO fabricas (" +
+                                 cp_CNPJ + "," +
+                                 cp_Endereco + "," +
+                                 cp_IdCliente + "," +
+                                 cp_IdDistribuidora + "," +
+                                 ") Values (" +
+                                 prm_CNPJ + "," +
+                                 prm_Endereco + "," +
+                                 prm_IdCliente + "," +
+                                 prm_IdDistribuidora + ");";
             int status = 0;
 
             using (con = ConexaoBD.ObterConexao())
             {
                 cmd = new SqlCommand(procNome, con);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue("@FUNCAO", "3");
-                cmd.Parameters.AddWithValue(prm_IdFabrica, f.IdFabrica);
-                cmd.Parameters.AddWithValue(prm_IdCliente, f.IdCliente);
-                cmd.Parameters.AddWithValue(prm_CNPJ, f.CNPJ);
-                cmd.Parameters.AddWithValue(prm_Endereco, f.Endereco);
+                //cmd.Parameters.AddWithValue("@FUNCAO", "3");
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = f.IdFabrica;
+                cmd.Parameters.Add(prm_IdCliente, SqlDbType.Int).Value = f.IdCliente;
+                cmd.Parameters.Add(prm_CNPJ, SqlDbType.VarChar).Value = f.CNPJ;
+                cmd.Parameters.Add(prm_Endereco, SqlDbType.VarChar).Value = f.Endereco;
+                cmd.Parameters.Add(prm_IdDistribuidora, SqlDbType.Int).Value = f.IdDistribuidora;
 
-                parametroSaida = new SqlParameter();
-                parametroSaida.ParameterName = "@STATUS";
-                parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
-                parametroSaida.Direction = System.Data.ParameterDirection.Output;
-                cmd.Parameters.Add(parametroSaida);
+                //parametroSaida = new SqlParameter();
+                //parametroSaida.ParameterName = "@STATUS";
+                //parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
+                //parametroSaida.Direction = System.Data.ParameterDirection.Output;
+                //cmd.Parameters.Add(parametroSaida);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
 
-                status = Convert.ToInt32(parametroSaida.Value);
+                    status = 1;
+                    //status = Convert.ToInt32(parametroSaida.Value);
+                }catch
+                {
+                    status = 0;
+                }
 
             }
 

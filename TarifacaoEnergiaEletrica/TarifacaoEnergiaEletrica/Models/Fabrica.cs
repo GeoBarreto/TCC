@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace TarifacaoEnergiaEletrica.Models
 {
@@ -13,5 +14,6 @@ namespace TarifacaoEnergiaEletrica.Models
         public int IdCliente { get; set; }
         public String CNPJ { get; set; }
         public String Endereco { get; set; }
+        public int IdDistribuidora { get; set; }
     }
 }
