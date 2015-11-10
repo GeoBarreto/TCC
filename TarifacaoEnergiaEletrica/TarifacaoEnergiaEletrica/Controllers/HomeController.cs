@@ -92,6 +92,18 @@ namespace TarifacaoEnergiaEletrica.Controllers
         }
 
         [HttpGet]
+        public ActionResult ExcluirFabrica(int? IdFabrica)
+        {
+            if (IdFabrica == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            int status = FabricaDAO.ObterInstancia().ExcluirFabrica(Convert.ToInt32(IdFabrica));
+
+            return RedirectToAction("ListaFabricas");
+        }
+
+        [HttpGet]
         public ActionResult EditarFabrica(int? IdFabrica)
         {
             if (IdFabrica == null)

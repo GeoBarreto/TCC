@@ -8,7 +8,7 @@
 @using (Html.BeginForm("EditarFabrica", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken() //prevenção contra CSRF
-                            @Html.ValidationSummary(true)
+    @Html.ValidationSummary(true)
 
     if (@ViewBag.Message != null)
     {
@@ -31,7 +31,6 @@
         <tr>
             <td>@Html.Label("Distribuidora")</td>
             <td>@Html.DropDownList("distribuidoras", String.Empty)</td>
-
         </tr>
         <tr>
             <td><input type="submit" value="Salvar" /></td>

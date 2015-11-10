@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace TarifacaoEnergiaEletrica.Models
 {
@@ -169,6 +170,47 @@ namespace TarifacaoEnergiaEletrica.Models
                 cmd.ExecuteNonQuery();
 
                 status = Convert.ToInt32(parametroSaida.Value);
+
+            }
+
+            return status;
+        }
+
+        public int ExcluirContasPorFabrica(int IdFabrica)
+        {
+            //SqlParameter parametroSaida;
+            //String procNome = "sp_GerenciaConta";
+            String procNome = "DELETE FROM contas WHERE " + cp_IdFabrica + "=" + prm_IdFabrica + ";";
+            int status = 0;
+
+            using (con = ConexaoBD.ObterConexao())
+            {
+                cmd = new SqlCommand(procNome, con);
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                //cmd.Parameters.AddWithValue("@FUNCAO", "4");
+                //cmd.Parameters.AddWithValue(prm_DataReferencia, DataReferencia);
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = IdFabrica;
+
+                //parametroSaida = new SqlParameter();
+                //parametroSaida.ParameterName = "@STATUS";
+                //parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
+                //parametroSaida.Direction = System.Data.ParameterDirection.Output;
+                //cmd.Parameters.Add(parametroSaida);
+
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    status = 1;
+                    //status = Convert.ToInt32(parametroSaida.Value);
+                }
+                catch
+                {
+                    status = 0;
+                }
+                
 
             }
 

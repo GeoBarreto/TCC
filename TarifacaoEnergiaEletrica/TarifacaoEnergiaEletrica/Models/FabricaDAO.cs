@@ -64,7 +64,7 @@ namespace TarifacaoEnergiaEletrica.Models
                                " FROM fabricas f " +
                                "INNER JOIN distribuidoras d " + 
                                 "ON f." + cp_IdDistribuidora + " = d." + cp_IdDistribuidora +
-                               "WHERE " + "f." + cp_IdFabrica + "=" + prm_IdFabrica + ";";
+                               " WHERE " + "f." + cp_IdFabrica + "=" + prm_IdFabrica + ";";
 
             Fabrica f = new Fabrica();
 
@@ -122,10 +122,11 @@ namespace TarifacaoEnergiaEletrica.Models
                 //cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue("@FUNCAO", "2");
+                //cmd.Parameters.AddWithValue("@FUNCAO", "2");
                 cmd.Parameters.Add(prm_CNPJ, SqlDbType.VarChar).Value = f.CNPJ;
                 cmd.Parameters.Add(prm_Endereco, SqlDbType.VarChar).Value = f.Endereco;
                 cmd.Parameters.Add(prm_IdDistribuidora, SqlDbType.Int).Value = f.IdDistribuidora;
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = f.IdFabrica;
 
                 //parametroSaida = new SqlParameter();
                 //parametroSaida.ParameterName = "@STATUS";
@@ -205,30 +206,38 @@ namespace TarifacaoEnergiaEletrica.Models
         public int ExcluirFabrica(int IdFabrica)
         {
             SqlParameter parametroSaida;
-            String procNome = "sp_GerenciaFabrica";
+            //String procNome = "sp_GerenciaFabrica";
+            String procNome = "DELETE FROM fabricas WHERE " + cp_IdFabrica + "=" + prm_IdFabrica + ";";
             int status = 0;
 
-            using (con = ConexaoBD.ObterConexao())
+            status = ContaDAO.ObterInstancia().ExcluirContasPorFabrica(IdFabrica);
+
+            if (status == 1)
             {
-                cmd = new SqlCommand(procNome, con);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                using (con = ConexaoBD.ObterConexao())
+                {
+                    cmd = new SqlCommand(procNome, con);
+                    //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue("@FUNCAO", "4");
-                cmd.Parameters.AddWithValue(prm_IdFabrica, IdFabrica);
+                    //cmd.Parameters.AddWithValue("@FUNCAO", "4");
+                    cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = IdFabrica;
 
-                parametroSaida = new SqlParameter();
-                parametroSaida.ParameterName = "@STATUS";
-                parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
-                parametroSaida.Direction = System.Data.ParameterDirection.Output;
-                cmd.Parameters.Add(parametroSaida);
+                    //parametroSaida = new SqlParameter();
+                    //parametroSaida.ParameterName = "@STATUS";
+                    //parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
+                    //parametroSaida.Direction = System.Data.ParameterDirection.Output;
+                    //cmd.Parameters.Add(parametroSaida);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-
-                status = Convert.ToInt32(parametroSaida.Value);
-
+                    try {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        status = 1;
+                        //status = Convert.ToInt32(parametroSaida.Value);
+                    }
+                    catch{status = 0;}
+                }
             }
-
             return status;
         }
 
@@ -246,7 +255,8 @@ namespace TarifacaoEnergiaEletrica.Models
                                " FROM fabricas f " +
                                "INNER JOIN distribuidoras d " +
                                "ON f." + cp_IdDistribuidora + " = d." + cp_IdDistribuidora +
-                               " WHERE f." + cp_IdCliente + " = " + prm_IdCliente;
+                               " WHERE f." + cp_IdCliente + " = " + prm_IdCliente +
+                               " ORDER BY f." + cp_CNPJ + ";";
 
             Fabrica f;
 
