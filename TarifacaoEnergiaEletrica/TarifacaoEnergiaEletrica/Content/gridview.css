@@ -1,0 +1,14 @@
+﻿.table th
+{
+    font-size: large;
+    font-weight: bold;
+    color: blue;
+    border: 1px solid black;
+    padding: 8px;
+}
+/* estilo para as celulas da tabela */
+.table td
+{
+    padding: 8px;
+    border: 1px solid black;
+}

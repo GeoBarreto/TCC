@@ -1,16 +1,14 @@
 ﻿@model TarifacaoEnergiaEletrica.Models.Fabrica
 @{
-    ViewBag.Title = "Cadastro de Fabrica";
+    ViewBag.Title = "Editar Fabrica";
 }
 
-<h2>
-    CadastroFabrica
-</h2>
+<h2>Editar Fabrica</h2>
 
-@using (Html.BeginForm("CadastroFabrica", "Home", FormMethod.Post))
+@using (Html.BeginForm("EditarFabrica", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken() //prevenção contra CSRF
-    @Html.ValidationSummary(true)
+                            @Html.ValidationSummary(true)
 
     if (@ViewBag.Message != null)
     {

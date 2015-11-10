@@ -23,6 +23,7 @@ namespace TarifacaoEnergiaEletrica.Models
         private String cp_CNPJ;
         private String cp_Endereco;
         private String cp_IdDistribuidora;
+        private String cp_NomeDistribuidora;
 
         public FabricaDAO()
         {
@@ -37,6 +38,7 @@ namespace TarifacaoEnergiaEletrica.Models
             cp_CNPJ = "cnpj_fabrica";
             cp_Endereco = "endereco";
             cp_IdDistribuidora = "id_distribuidora";
+            cp_NomeDistribuidora = "nome";
         }
 
         public static FabricaDAO ObterInstancia()
@@ -49,27 +51,53 @@ namespace TarifacaoEnergiaEletrica.Models
             return instancia;
         }
 
-        public Fabrica ObterFabricaPorID(int idFabrica)
+        public Fabrica ObterFabricaPorID(int IdFabrica)
         {
-            String procNome = "sp_GerenciaFabrica";
+            //String procNome = "sp_GerenciaFabrica";
+            String procNome = "SELECT " +
+                               "f." + cp_IdFabrica + "," +
+                               "f." + cp_Endereco + "," +
+                               "f." + cp_CNPJ + "," +
+                               "f." + cp_IdDistribuidora + "," +
+                               "f." + cp_IdCliente + "," +
+                               "d." + cp_NomeDistribuidora +
+                               " FROM fabricas f " +
+                               "INNER JOIN distribuidoras d " + 
+                                "ON f." + cp_IdDistribuidora + " = d." + cp_IdDistribuidora +
+                               "WHERE " + "f." + cp_IdFabrica + "=" + prm_IdFabrica + ";";
+
             Fabrica f = new Fabrica();
 
             using (con = ConexaoBD.ObterConexao())
             {
                 cmd = new SqlCommand(procNome, con);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue("@FUNCAO", "1");
-                cmd.Parameters.AddWithValue(prm_IdFabrica, idFabrica);
+                //cmd.Parameters.AddWithValue("@FUNCAO", "1");
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = IdFabrica;
 
-
-                con.Open();
-                using (SqlDataReader resultado = cmd.ExecuteReader())
+                try {
+                    con.Open();
+                    using (SqlDataReader resultado = cmd.ExecuteReader())
+                    {
+                        if (resultado.Read())
+                        {
+                            f.IdFabrica = resultado.GetInt32(resultado.GetOrdinal(cp_IdFabrica));
+                            f.IdCliente = resultado.GetInt32(resultado.GetOrdinal(cp_IdCliente));
+                            f.CNPJ = resultado.GetString(resultado.GetOrdinal(cp_CNPJ));
+                            f.Endereco = resultado.GetString(resultado.GetOrdinal(cp_Endereco));
+                            f.NomeDistribuidora = resultado.GetString(resultado.GetOrdinal(cp_NomeDistribuidora));
+                        }
+                        else
+                        {
+                            f = null;
+                        }
+                    }
+                }
+                catch
                 {
-                    f.IdFabrica = resultado.GetInt32(resultado.GetOrdinal(cp_IdFabrica));
-                    f.IdCliente = resultado.GetInt32(resultado.GetOrdinal(cp_IdCliente));
-                    f.CNPJ = resultado.GetString(resultado.GetOrdinal(cp_CNPJ));
-                    f.Endereco = resultado.GetString(resultado.GetOrdinal(cp_Endereco));
+                    f = null;
                 }
             }
 
@@ -79,31 +107,44 @@ namespace TarifacaoEnergiaEletrica.Models
 
         public int AtualizaFabrica(Fabrica f)
         {
-            SqlParameter parametroSaida;
-            String procNome = "sp_GerenciaFabrica";
+            //SqlParameter parametroSaida;
+            //String procNome = "sp_GerenciaFabrica";
+            String procNome = "UPDATE fabricas SET " +
+                               cp_CNPJ + "=" + prm_CNPJ + "," +
+                               cp_Endereco + "=" + prm_Endereco + "," +
+                               cp_IdDistribuidora + "=" + prm_IdDistribuidora + 
+                               " WHERE " + cp_IdFabrica + "=" + prm_IdFabrica + ";";
             int status = 0;
 
             using (con = ConexaoBD.ObterConexao())
             {
                 cmd = new SqlCommand(procNome, con);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 cmd.Parameters.AddWithValue("@FUNCAO", "2");
-                cmd.Parameters.AddWithValue(prm_IdFabrica, f.IdFabrica);
-                cmd.Parameters.AddWithValue(prm_IdCliente, f.IdCliente);
-                cmd.Parameters.AddWithValue(prm_CNPJ, f.CNPJ);
-                cmd.Parameters.AddWithValue(prm_Endereco, f.Endereco);
+                cmd.Parameters.Add(prm_CNPJ, SqlDbType.VarChar).Value = f.CNPJ;
+                cmd.Parameters.Add(prm_Endereco, SqlDbType.VarChar).Value = f.Endereco;
+                cmd.Parameters.Add(prm_IdDistribuidora, SqlDbType.Int).Value = f.IdDistribuidora;
 
-                parametroSaida = new SqlParameter();
-                parametroSaida.ParameterName = "@STATUS";
-                parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
-                parametroSaida.Direction = System.Data.ParameterDirection.Output;
-                cmd.Parameters.Add(parametroSaida);
+                //parametroSaida = new SqlParameter();
+                //parametroSaida.ParameterName = "@STATUS";
+                //parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
+                //parametroSaida.Direction = System.Data.ParameterDirection.Output;
+                //cmd.Parameters.Add(parametroSaida);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
 
-                status = Convert.ToInt32(parametroSaida.Value);
+                    status = 1;
+                    //status = Convert.ToInt32(parametroSaida.Value);
+                }
+                catch
+                {
+                    status = 0;
+                }
 
             }
 
@@ -112,7 +153,7 @@ namespace TarifacaoEnergiaEletrica.Models
 
         public int SalvarFabrica(Fabrica f)
         {
-            SqlParameter parametroSaida;
+            //SqlParameter parametroSaida;
             //String procNome = "sp_GerenciaFabrica";
             String procNome = "INSERT INTO fabricas (" +
                                  cp_CNPJ + "," +
@@ -195,7 +236,18 @@ namespace TarifacaoEnergiaEletrica.Models
         {
             List<Fabrica> fabricas = new List<Fabrica>();
             //String procNome = "sp_GerenciaFabrica";
-            String procNome = "SELECT * FROM fabricas WHERE " + cp_IdCliente + " = " + prm_IdCliente;
+            String procNome = "SELECT " +
+                               "f." + cp_IdFabrica + "," +
+                               "f." + cp_Endereco + "," +
+                               "f." + cp_CNPJ + "," +
+                               "f." + cp_IdDistribuidora + "," +
+                               "f." + cp_IdCliente + "," +
+                               "d." + cp_NomeDistribuidora +
+                               " FROM fabricas f " +
+                               "INNER JOIN distribuidoras d " +
+                               "ON f." + cp_IdDistribuidora + " = d." + cp_IdDistribuidora +
+                               " WHERE f." + cp_IdCliente + " = " + prm_IdCliente;
+
             Fabrica f;
 
             using (con = ConexaoBD.ObterConexao())
@@ -206,21 +258,25 @@ namespace TarifacaoEnergiaEletrica.Models
 
                 cmd.Parameters.Add(prm_IdCliente, SqlDbType.Int).Value = IdCliente;
 
-                con.Open();
-                using (SqlDataReader resultado = cmd.ExecuteReader())
-                {
-                    while (resultado.Read())
+                try {
+                    con.Open();
+                    using (SqlDataReader resultado = cmd.ExecuteReader())
                     {
-                        f = new Fabrica();
+                        while (resultado.Read())
+                        {
+                            f = new Fabrica();
 
-                        f.IdFabrica = resultado.GetInt32(resultado.GetOrdinal(cp_IdFabrica));
-                        f.IdCliente = resultado.GetInt32(resultado.GetOrdinal(cp_IdCliente));
-                        f.CNPJ = resultado.GetString(resultado.GetOrdinal(cp_CNPJ));
-                        f.Endereco = resultado.GetString(resultado.GetOrdinal(cp_Endereco));
+                            f.IdFabrica = resultado.GetInt32(resultado.GetOrdinal(cp_IdFabrica));
+                            f.IdCliente = resultado.GetInt32(resultado.GetOrdinal(cp_IdCliente));
+                            f.CNPJ = resultado.GetString(resultado.GetOrdinal(cp_CNPJ));
+                            f.Endereco = resultado.GetString(resultado.GetOrdinal(cp_Endereco));
+                            f.NomeDistribuidora = resultado.GetString(resultado.GetOrdinal(cp_NomeDistribuidora));
 
-                        fabricas.Add(f);
+                            fabricas.Add(f);
+                        }
                     }
                 }
+                catch { }
             }
 
             return fabricas;

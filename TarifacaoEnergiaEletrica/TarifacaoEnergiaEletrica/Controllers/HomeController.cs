@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using TarifacaoEnergiaEletrica.Models;
 using System.Collections;
+using System.Net;
 
 namespace TarifacaoEnergiaEletrica.Controllers
 {
@@ -83,6 +84,44 @@ namespace TarifacaoEnergiaEletrica.Controllers
                 if(status == 0)
                 {
                     ModelState.AddModelError(string.Empty,"Não foi possivel realizar o cadastro");
+                    return RedirectToAction("CadastroFabrica");
+                }
+                return RedirectToAction("ListaFabricas");
+            }
+            return View(f);
+        }
+
+        [HttpGet]
+        public ActionResult EditarFabrica(int? IdFabrica)
+        {
+            if (IdFabrica == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Fabrica f = FabricaDAO.ObterInstancia().ObterFabricaPorID(Convert.ToInt32(IdFabrica));
+            if (f == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            List<Distribuidora> d = DistribuidoraDAO.ObterInstancia().ObterDistribuidoras();
+            ViewBag.distribuidoras = new SelectList(d, "IdDistribuidora", "Nome");
+            return View(f);
+        }
+
+        [HttpPost]
+        public ActionResult EditarFabrica(Fabrica f)
+        {
+            int status;
+            string idDistribuidora = Request.Form["distribuidoras"].ToString();
+            if (idDistribuidora != null)
+            {
+                f.IdDistribuidora = Convert.ToInt32(idDistribuidora);
+                f.IdCliente = Convert.ToInt32(Session["IdCliente"]);
+                status = FabricaDAO.ObterInstancia().AtualizaFabrica(f);
+                if (status == 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Não foi possivel realizar o cadastro");
+                    return RedirectToAction("EditarFabrica");
                 }
                 return RedirectToAction("ListaFabricas");
             }
