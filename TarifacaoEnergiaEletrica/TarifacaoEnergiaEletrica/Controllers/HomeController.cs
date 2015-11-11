@@ -139,5 +139,10 @@ namespace TarifacaoEnergiaEletrica.Controllers
             }
             return View(f);
         }
+
+        public ActionResult BuscarContas(int? IdFabrica)
+        {
+            return View(IdFabrica);
+        }
     }
 }

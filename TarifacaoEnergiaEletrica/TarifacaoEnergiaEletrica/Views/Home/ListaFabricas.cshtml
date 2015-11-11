@@ -11,7 +11,7 @@
     grid.Column("CNPJ"),
     grid.Column("Endereco",header: "Endereço"),
     grid.Column("NomeDistribuidora",header:"Distribuidora"),
-    grid.Column(header: "", format:(item) => Html.ActionLink("Ver contas", "VisualizarContas", new { IdFabrica = item.IdFabrica})),
+    grid.Column(header: "", format:(item) => Html.ActionLink("Ver contas", "BuscarContas", new { IdFabrica = item.IdFabrica})),
     grid.Column(header: "", format:(item) => Html.ActionLink("Editar", "EditarFabrica", new { IdFabrica = item.IdFabrica})),
     grid.Column(header: "", format:(item) => Html.ActionLink("Excluir", "ExcluirFabrica", new { IdFabrica = item.IdFabrica})),
 })

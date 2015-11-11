@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "BuscarContas";
+}
+
+<h2>Buscar Contas</h2>
+
+@using (Html.BeginForm("VisualizarContas", "Home", FormMethod.Get))
+{
+    <div id="busca-box-label">
+        <p>Data inicio<p>
+    </div>
+    <div class="input-div" id="input-dataIni">
+        <input type="text" class="datepicker" id="DataInicio" />
+    </div>
+    <p>Data Final</p>
+    <div class="input-div" id="input-dataFim">
+        <input type="text" class="datepicker" id="DataFim" />
+    </div>
+    <div id="botoes">
+        <input type="submit" value="Buscar" />
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
