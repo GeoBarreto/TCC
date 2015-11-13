@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
+using System.Web.Mvc;
 
 namespace TarifacaoEnergiaEletrica.Models
 {
@@ -53,9 +54,9 @@ namespace TarifacaoEnergiaEletrica.Models
             cp_ConsumoNP = "consumo_np";
             cp_ConsumoFP = "consumo_fp";
             cp_DemandaTUSD = "demanda_tusd";
-            cp_ConsumoUltrapassagemNP = "consumo_ultrapasagem_np";
-            cp_ConsumoUltrapassagemFP = "consumo_ultrapasagem_fp";
-            cp_ConsumoUltrapassagem = "consumo_ultrapasagem";
+            cp_ConsumoUltrapassagemNP = "consumo_ultrapassagem_np";
+            cp_ConsumoUltrapassagemFP = "consumo_ultrapassagem_fp";
+            cp_ConsumoUltrapassagem = "consumo_ultrapassagem";
         }
 
         public static ContaDAO ObterInstancia()
@@ -248,19 +249,22 @@ namespace TarifacaoEnergiaEletrica.Models
             return status;
         }
 
-        public ArrayList ObterContasPorPeriodo(DateTime dataInicio, DateTime dataFim)
+        public List<Conta> ObterContasPorPeriodo(DateTime dataInicio, DateTime dataFim, int IdFabrica)
         {
-            ArrayList contas = new ArrayList();
-            String procNome = "sp_ObterContasPorPeriodo";
+            List<Conta> contas = new List<Conta>();
+            //String procNome = "sp_ObterContasPorPeriodo";
+            String procNome = "SELECT * FROM contas WHERE " + cp_IdFabrica + "=" + prm_IdFabrica + " AND " + cp_DataReferencia + " BETWEEN " + prm_DataInicio + " AND " + prm_DataFim + ";";
             Conta c;
 
             using (con = ConexaoBD.ObterConexao())
             {
                 cmd = new SqlCommand(procNome, con);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue(prm_DataInicio, dataInicio);
-                cmd.Parameters.AddWithValue(prm_DataFim, dataFim);
+                cmd.Parameters.Add(prm_DataInicio, SqlDbType.DateTime).Value = dataInicio;
+                cmd.Parameters.Add(prm_DataFim, SqlDbType.DateTime).Value = dataFim;
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = IdFabrica;
 
                 con.Open();
                 using (SqlDataReader resultado = cmd.ExecuteReader())
@@ -286,5 +290,45 @@ namespace TarifacaoEnergiaEletrica.Models
 
         }
 
+        public List<ContaModel> ObterContasModelPorPeriodo(DateTime dataInicio, DateTime dataFim, int IdFabrica)
+        {
+            List<ContaModel> contas = new List<ContaModel>();
+            //String procNome = "sp_ObterContasPorPeriodo";
+            String procNome = "SELECT * FROM contas WHERE " + cp_IdFabrica + "=" + prm_IdFabrica + " AND " + cp_DataReferencia + " BETWEEN " + prm_DataInicio + " AND " + prm_DataFim + ";";
+            ContaModel c;
+
+            using (con = ConexaoBD.ObterConexao())
+            {
+                cmd = new SqlCommand(procNome, con);
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.Add(prm_DataInicio, SqlDbType.DateTime).Value = dataInicio;
+                cmd.Parameters.Add(prm_DataFim, SqlDbType.DateTime).Value = dataFim;
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = IdFabrica;
+
+                con.Open();
+                using (SqlDataReader resultado = cmd.ExecuteReader())
+                {
+                    while (resultado.Read())
+                    {
+                        c = new ContaModel();
+                        c.DataReferencia = resultado.GetDateTime(resultado.GetOrdinal(cp_DataReferencia));
+                        c.IdFabrica = resultado.GetInt32(resultado.GetOrdinal(cp_IdFabrica));
+                        c.ConsumoNP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoNP));
+                        c.ConsumoFP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoFP));
+                        c.DemandaTUSD = resultado.GetDouble(resultado.GetOrdinal(cp_DemandaTUSD));
+                        c.ConsumoUltrapassagemNP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoUltrapassagemNP));
+                        c.ConsumoUltrapassagemFP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoUltrapassagemFP));
+                        c.ConsumoUltrapassagem = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoUltrapassagem));
+
+                        contas.Add(c);
+                    }
+                }
+            }
+
+            return contas;
+
+        }
     }
 }

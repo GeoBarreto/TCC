@@ -12,8 +12,6 @@ namespace TarifacaoEnergiaEletrica.Models
 {
     public partial class ContaModel
     {
-        //public IEnumerable<SelectListItem> listaMeses;
-        //public IEnumerable<SelectListItem> listaAnos;
         public String DataInicialMes { get; set; }
         public String DataInicialAno { get; set; }
         public String DataFinalMes { get; set; }
@@ -28,56 +26,25 @@ namespace TarifacaoEnergiaEletrica.Models
         public double ConsumoUltrapassagemFP { get; set; }
         public double ConsumoUltrapassagem { get; set; }
         public int IdTarifa { get; set; }
+        public DateTime DataReferencia { get; set; }
+        public double Total { get; set; }
 
-        /*public ContaModel()
+        public Conta ConverterParaConta()
         {
+            Conta c = new Conta();
+            c.IdFabrica = IdFabrica;
+            c.ConsumoNP = ConsumoNP;
+            c.ConsumoFP = ConsumoFP;
+            c.DemandaTUSD = DemandaTUSD;
+            c.ConsumoUltrapassagemNP = ConsumoUltrapassagemNP;
+            c.ConsumoUltrapassagemFP = ConsumoUltrapassagemFP;
+            c.ConsumoUltrapassagem = ConsumoUltrapassagem;
+            DataReferencia = DataModel.ContruirData("01", DataReferenciaMes, DataReferenciaAno);
+            c.DataReferencia = DataReferencia;
+            c.Total = Total;
 
-            listaMeses = ObterMeses();
-            listaAnos = ObterAnos();
-
-        }*/
-
-        public static IEnumerable<SelectListItem> ObterMeses()
-        {
-            SelectList meses = new SelectList(
-                new List<SelectListItem>
-                {
-                    new SelectListItem {Text = "JAN", Value = "01"},
-                    new SelectListItem {Text = "FEV", Value = "02"},
-                    new SelectListItem {Text = "MAR", Value = "03"},
-                    new SelectListItem {Text = "ABR", Value = "04"},
-                    new SelectListItem {Text = "MAI", Value = "05"},
-                    new SelectListItem {Text = "JUN", Value = "06"},
-                    new SelectListItem {Text = "JUL", Value = "07"},
-                    new SelectListItem {Text = "AGO", Value = "08"},
-                    new SelectListItem {Text = "SET", Value = "09"},
-                    new SelectListItem {Text = "OUT", Value = "10"},
-                    new SelectListItem {Text = "NOV", Value = "11"},
-                    new SelectListItem {Text = "DEZ", Value = "12"},
-               }
-               , "Value"
-               , "Text"
-            );
-
-            return meses;
+            return c;
         }
-
-        public static IEnumerable<SelectListItem> ObterAnos()
-        {
-            String ano;
-            List<SelectListItem> lista = new List<SelectListItem>();
-            SelectList anos;
-
-            for (int i = 0; i < 50; i++) {
-                ano = Convert.ToString(DateTime.Now.Year - i);
-                lista.Add(new SelectListItem {Text = ano, Value = ano });
-            }
-
-            anos = new SelectList(lista, "Value", "Text");
-
-            return anos;
-        }
-
     }
 
 }

@@ -129,6 +129,7 @@
     <Compile Include="Models\Conta.cs" />
     <Compile Include="Models\ContaDAO.cs" />
     <Compile Include="Models\ContaModel.cs" />
+    <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\Distribuidora.cs" />
     <Compile Include="Models\DistribuidoraDAO.cs" />
     <Compile Include="Models\Fabrica.cs" />
@@ -180,6 +181,9 @@
     <Content Include="Views\Home\CadastroFabrica.cshtml" />
     <Content Include="Views\Home\EditarFabrica.cshtml" />
     <Content Include="Views\Home\BuscarContas.cshtml" />
+    <Content Include="Views\Home\GerarRelatorio.cshtml" />
+    <Content Include="Views\Home\ListaContas.cshtml" />
+    <Content Include="Views\Home\CadastroConta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

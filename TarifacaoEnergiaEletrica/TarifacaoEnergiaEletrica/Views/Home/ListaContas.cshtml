@@ -1,0 +1,23 @@
+﻿@model List<TarifacaoEnergiaEletrica.Models.ContaModel>
+@{
+    ViewBag.Title = "Lista Contas";
+    WebGrid grid = new WebGrid(Model);
+}
+
+<h2>Lista de Contas</h2>
+
+@grid.GetHtml(columns: new[]
+{
+    grid.Column("DataReferencia", header: "Data de referencia"),
+    grid.Column("ConsumoNP",header: "Consumo na ponta"),
+    grid.Column("ConsumoFP",header:"Consumo fora de ponta"),
+    grid.Column("DemandaTUSD",header:"Demanda TUSD"),
+    grid.Column("ConsumoUltrapassagemNP",header:"Ultrapassagem fora de ponta"),
+    grid.Column("ConsumoUltrapassagemFP",header:"Ultrapassagem fora de ponta"),
+    grid.Column("ConsumoUltrapassagem",header:"Ultrapassagem"),
+    grid.Column(header: "", format:(item) => Html.ActionLink("Editar", "EditarConta", new { DataReferencia = item.DataReferencia})),
+    grid.Column(header: "", format:(item) => Html.ActionLink("Excluir", "ExcluirConta", new { DataReferencia = item.DataReferencia})),
+})
+
+<div>@Html.ActionLink("Nova Conta", "CadastroConta")</div>
+<div>@Html.ActionLink("Voltar", "BuscarContas")</div>

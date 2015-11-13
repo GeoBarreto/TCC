@@ -1,6 +1,6 @@
 ﻿@model TarifacaoEnergiaEletrica.Models.ContaModel
 @{
-    ViewBag.Title = "Buscar Contas";
+    ViewBag.Title = "Cadastro Conta";
 
     var meses = new SelectList(
                 new List<SelectListItem>
@@ -41,30 +41,70 @@
            , "Value"
            , "Text"
         );
+
 }
 
+<h2>Cadastro Conta</h2>
 
-<h2>Buscar Contas</h2>
-
-@Html.HiddenFor(Model => Model.IdFabrica)
-@using (Html.BeginForm("BuscarContas", "Home", FormMethod.Post))
+@using (Html.BeginForm("CadastroConta", "Home", FormMethod.Post))
 {
-    <div class="input-div" id="input-dataIni">
-       Data Inicial:
-       @Html.DropDownListFor(Model => Model.DataInicialMes, meses)
-       @Html.DropDownListFor(Model => Model.DataInicialAno, anos)
-    </div>
-    <div class="input-div" id="input-dataFim">
-        Data Final:
-        @Html.DropDownListFor(Model => Model.DataFinalMes, meses)
-        @Html.DropDownListFor(Model => Model.DataFinalAno, anos)
-    </div>
-    <div id="botoes">
-        <input type="submit" name="btnSubmit" value="Buscar" />
-        <input type="submit" name="btnSubmit" value="Gerar graficos" />
-    </div>
+    @Html.AntiForgeryToken() //prevenção contra CSRF
+    @Html.ValidationSummary(true)
+
+    if (@ViewBag.Message != null)
+    {
+        <div style="border:1px solid red">
+            @ViewBag.Message
+        </div>
+    }
+    @Html.HiddenFor(Model => Model.IdFabrica)
+    <table>
+        <tr>
+            <td><label>Data Referencia:</label></td>
+            <td>
+                @Html.DropDownListFor(Model => Model.DataReferenciaMes, meses)
+                @Html.DropDownListFor(Model => Model.DataReferenciaAno, anos)
+            </td>
+        </tr>
+        <tr>
+            <td><label>Demanda TUSD:</label></td>
+            <td>@Html.TextBoxFor(Model => Model.DemandaTUSD)</td>
+        </tr>
+        <tr>
+            <td><label>Consumo na ponta:</label></td>
+            <td>@Html.TextBoxFor(Model => Model.ConsumoNP)</td>
+        </tr>
+        <tr>
+            <td><label>Consumo fora da ponta:</label></td>
+            <td>@Html.TextBoxFor(Model => Model.ConsumoFP)</td>
+        </tr>
+        <tr>
+            <td><label>Total pago:</label></td>
+            <td>@Html.TextBoxFor(Model => Model.Total)</td>
+        </tr>
+        <tr>
+            <td><label>Valor de ultrapassagem fora de ponta:</label></td>
+            <td>@Html.TextBoxFor(Model => Model.ConsumoUltrapassagemFP)</td>
+        </tr>
+        <tr>
+            <td><label>Valor de ultrapassagem na de ponta:</label></td>
+            <td>@Html.TextBoxFor(Model => Model.ConsumoUltrapassagemNP)</td>
+        </tr>
+        <tr>
+            <td><label>Valor de ultrapassagem:</label></td>
+            <td>@Html.TextBoxFor(Model => Model.ConsumoUltrapassagem)</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Salvar" /></td>
+        </tr>
+    </table>
 }
+
+<div>
+    @Html.ActionLink("Voltar para lista", "ListaContas")
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+

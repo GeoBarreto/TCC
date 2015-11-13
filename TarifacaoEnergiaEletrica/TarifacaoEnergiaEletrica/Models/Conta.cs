@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TarifacaoEnergiaEletrica.Models
 {
-    class Conta
+    public class Conta
     {
         public DateTime DataReferencia { get; set; }
         public int IdFabrica { get; set; }
@@ -17,5 +17,6 @@ namespace TarifacaoEnergiaEletrica.Models
         public double ConsumoUltrapassagemFP { get; set; }
         public double ConsumoUltrapassagem { get; set; }
         public int IdTarifa { get; set; }
+        public double Total { get; set; }
     }
 }

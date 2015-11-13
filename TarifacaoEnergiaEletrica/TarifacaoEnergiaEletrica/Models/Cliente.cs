@@ -8,5 +8,6 @@ namespace TarifacaoEnergiaEletrica.Models
 {
     class Cliente
     {
+
     }
 }

@@ -142,21 +142,22 @@ namespace TarifacaoEnergiaEletrica.Controllers
 
         public ActionResult BuscarContas(int? IdFabrica)
         {
-            ViewBag.listaMeses = ContaModel.ObterMeses();
-            ViewBag.listaAnos = ContaModel.ObterAnos();
-            return View(IdFabrica);
+            
+            Session["IdFabrica"] = IdFabrica;
+            return View();
         }
 
-        [HttpGet]
-        public ActionResult BuscarContas(int? IdFabrica, ContaModel cm, String btnSubmit)
+        [HttpPost]
+        public ActionResult BuscarContas(ContaModel cm, String btnSubmit)
         {
+            cm.IdFabrica = Convert.ToInt32(Session["IdFabrica"]);
             switch (btnSubmit)
             {
                 case "Buscar":
-                    return (ListaContas(cm));
+                    return RedirectToAction("ListaContas",cm);
 
                 case "Gerar graficos":
-                    return (GerarRelatorio(cm));
+                    return RedirectToAction("GerarRelatorio",cm);
 
                 default:
                     return (View());
@@ -165,12 +166,48 @@ namespace TarifacaoEnergiaEletrica.Controllers
 
         public ActionResult ListaContas(ContaModel cm)
         {
-            return View();
+            DateTime dataInicio = DataModel.ContruirData("01", cm.DataInicialMes, cm.DataInicialAno);
+            DateTime dataFim = DataModel.ContruirData("01", cm.DataFinalMes, cm.DataFinalAno);
+            List<ContaModel> contas = ContaDAO.ObterInstancia().ObterContasModelPorPeriodo(dataInicio, dataFim, cm.IdFabrica);
+            return View(contas);
         }
 
         public ActionResult GerarRelatorio(ContaModel cm)
         {
+            DateTime dataInicio = DataModel.ContruirData("01", cm.DataInicialMes, cm.DataInicialAno);
+            DateTime dataFim = DataModel.ContruirData("01", cm.DataFinalMes, cm.DataFinalAno);
+            List<Conta> contas = ContaDAO.ObterInstancia().ObterContasPorPeriodo(dataInicio, dataFim, cm.IdFabrica);
+            
+            var chartsdata = contas;
+            ViewBag.historico = contas;
+            return View(contas);
+        }
+
+        public JsonResult LineChat()
+        {
+            var chartsdata = ViewBag.historico;
+            return Json(chartsdata, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CadastroConta()
+        {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult CadastroConta(ContaModel cm)
+        {
+            int status;
+
+            cm.IdFabrica = Convert.ToInt32(Session["IdFabrica"]);
+            status = ContaDAO.ObterInstancia().SalvarConta(cm.ConverterParaConta());
+            if (status == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Não foi possivel realizar o cadastro");
+                return RedirectToAction("CadastroConta");
+            }
+            return RedirectToAction("ListaContas");
+
         }
     }
 }
