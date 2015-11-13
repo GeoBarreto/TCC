@@ -128,6 +128,7 @@
     <Compile Include="Models\ConexaoBD.cs" />
     <Compile Include="Models\Conta.cs" />
     <Compile Include="Models\ContaDAO.cs" />
+    <Compile Include="Models\ContaModel.cs" />
     <Compile Include="Models\Distribuidora.cs" />
     <Compile Include="Models\DistribuidoraDAO.cs" />
     <Compile Include="Models\Fabrica.cs" />
@@ -140,7 +141,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\gridview.css" />
-    <Content Include="Content\jquery-ui-min.css" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -182,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\App_LocalResources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

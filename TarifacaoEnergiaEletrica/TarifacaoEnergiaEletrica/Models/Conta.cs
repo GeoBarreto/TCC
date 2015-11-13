@@ -16,5 +16,6 @@ namespace TarifacaoEnergiaEletrica.Models
         public double ConsumoUltrapassagemNP { get; set; }
         public double ConsumoUltrapassagemFP { get; set; }
         public double ConsumoUltrapassagem { get; set; }
+        public int IdTarifa { get; set; }
     }
 }

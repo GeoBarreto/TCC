@@ -1,29 +1,29 @@
-﻿
+﻿@model TarifacaoEnergiaEletrica.Models.ContaModel
 @{
-    ViewBag.Title = "BuscarContas";
+    ViewBag.Title = "Buscar Contas";
 }
+
 
 <h2>Buscar Contas</h2>
 
-@using (Html.BeginForm("VisualizarContas", "Home", FormMethod.Get))
+@using (Html.BeginForm("VisualizarContas", "Home", FormMethod.Post))
 {
-    <div id="busca-box-label">
-        <p>Data inicio<p>
-    </div>
     <div class="input-div" id="input-dataIni">
-        <input type="text" class="datepicker" id="DataInicio" />
+        Data Inicial:
+        @Html.DropDownList("listaMeses")
+        
+
     </div>
     <p>Data Final</p>
     <div class="input-div" id="input-dataFim">
-        <input type="text" class="datepicker" id="DataFim" />
+        
     </div>
     <div id="botoes">
-        <input type="submit" value="Buscar" />
+        <input type="submit" name="btnSubmit" value="Buscar" />
+        <input type="submit" name="btnSubmit" value="Gerar graficos" />
     </div>
 }
 
-<script>
-    $(document).ready(function () {
-        $(".datepicker").datepicker();
-    });
-</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

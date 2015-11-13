@@ -142,7 +142,35 @@ namespace TarifacaoEnergiaEletrica.Controllers
 
         public ActionResult BuscarContas(int? IdFabrica)
         {
+            ViewBag.listaMeses = ContaModel.ObterMeses();
+            ViewBag.listaAnos = ContaModel.ObterAnos();
             return View(IdFabrica);
+        }
+
+        [HttpGet]
+        public ActionResult BuscarContas(int? IdFabrica, ContaModel cm, String btnSubmit)
+        {
+            switch (btnSubmit)
+            {
+                case "Buscar":
+                    return (ListaContas(cm));
+
+                case "Gerar graficos":
+                    return (GerarRelatorio(cm));
+
+                default:
+                    return (View());
+            }
+        }
+
+        public ActionResult ListaContas(ContaModel cm)
+        {
+            return View();
+        }
+
+        public ActionResult GerarRelatorio(ContaModel cm)
+        {
+            return View();
         }
     }
 }
