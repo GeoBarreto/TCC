@@ -26,6 +26,7 @@ namespace TarifacaoEnergiaEletrica.Models
         private String prm_ConsumoUltrapassagem;
         private String prm_DataInicio;
         private String prm_DataFim;
+        private String prm_Total;
         //campos
         private String cp_DataReferencia;
         private String cp_IdFabrica;
@@ -35,6 +36,7 @@ namespace TarifacaoEnergiaEletrica.Models
         private String cp_ConsumoUltrapassagemNP;
         private String cp_ConsumoUltrapassagemFP;
         private String cp_ConsumoUltrapassagem;
+        private String cp_Total;
 
         public ContaDAO()
         {
@@ -48,6 +50,7 @@ namespace TarifacaoEnergiaEletrica.Models
             prm_ConsumoUltrapassagem = "@CONSUMO_ULTRAPASSAGEM";
             prm_DataInicio = "@DATA_INICIO";
             prm_DataFim = "@DATA_FIM";
+            prm_Total = "@TOTAL";
 
             cp_DataReferencia = "data_referencia";
             cp_IdFabrica = "id_fabrica";
@@ -57,6 +60,7 @@ namespace TarifacaoEnergiaEletrica.Models
             cp_ConsumoUltrapassagemNP = "consumo_ultrapassagem_np";
             cp_ConsumoUltrapassagemFP = "consumo_ultrapassagem_fp";
             cp_ConsumoUltrapassagem = "consumo_ultrapassagem";
+            cp_Total = "total";
         }
 
         public static ContaDAO ObterInstancia()
@@ -142,35 +146,61 @@ namespace TarifacaoEnergiaEletrica.Models
 
         public int SalvarConta(Conta c)
         {
-            SqlParameter parametroSaida;
-            String procNome = "sp_GerenciaConta";
+            //SqlParameter parametroSaida;
+            //String procNome = "sp_GerenciaConta";
+
+            String procNome = "INSERT INTO contas (" +
+                               cp_Total + "," +
+                               cp_IdFabrica + "," +
+                               cp_DemandaTUSD + "," +
+                               cp_DataReferencia + "," +
+                               cp_ConsumoUltrapassagemNP + "," +
+                               cp_ConsumoUltrapassagemFP + "," +
+                               cp_ConsumoUltrapassagem + "," +
+                               cp_ConsumoNP + "," +
+                               cp_ConsumoFP + ") VALUES (" +
+                               prm_Total + "," +
+                               prm_IdFabrica + "," +
+                               prm_DemandaTUSD + "," +
+                               prm_DataReferencia + "," +
+                               prm_ConsumoUltrapassagemNP + "," +
+                               prm_ConsumoUltrapassagemFP + "," +
+                               prm_ConsumoUltrapassagem + "," +
+                               prm_ConsumoNP + "," +
+                               prm_ConsumoFP + ");";                   
             int status = 0;
 
             using (con = ConexaoBD.ObterConexao())
             {
                 cmd = new SqlCommand(procNome, con);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue("@FUNCAO", "3");
-                cmd.Parameters.AddWithValue(prm_DataReferencia, c.DataReferencia);
-                cmd.Parameters.AddWithValue(prm_IdFabrica, c.IdFabrica);
-                cmd.Parameters.AddWithValue(prm_ConsumoNP, c.ConsumoNP);
-                cmd.Parameters.AddWithValue(prm_ConsumoFP, c.ConsumoFP);
-                cmd.Parameters.AddWithValue(prm_DemandaTUSD, c.DemandaTUSD);
-                cmd.Parameters.AddWithValue(prm_ConsumoUltrapassagemNP, c.ConsumoUltrapassagemNP);
-                cmd.Parameters.AddWithValue(prm_ConsumoUltrapassagemFP, c.ConsumoUltrapassagemFP);
-                cmd.Parameters.AddWithValue(prm_ConsumoUltrapassagem, c.ConsumoUltrapassagem);
+                //cmd.Parameters.AddWithValue("@FUNCAO", "3");
+                cmd.Parameters.Add(prm_DataReferencia, SqlDbType.DateTime).Value = c.DataReferencia;
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = c.IdFabrica;
+                cmd.Parameters.Add(prm_ConsumoNP, SqlDbType.Float).Value = c.ConsumoNP;
+                cmd.Parameters.Add(prm_ConsumoFP, SqlDbType.Float).Value = c.ConsumoFP;
+                cmd.Parameters.Add(prm_DemandaTUSD, SqlDbType.Float).Value = c.DemandaTUSD;
+                cmd.Parameters.Add(prm_ConsumoUltrapassagemNP, SqlDbType.Float).Value = c.ConsumoUltrapassagemNP;
+                cmd.Parameters.Add(prm_ConsumoUltrapassagemFP, SqlDbType.Float).Value = c.ConsumoUltrapassagemFP;
+                cmd.Parameters.Add(prm_ConsumoUltrapassagem, SqlDbType.Float).Value = c.ConsumoUltrapassagem;
+                cmd.Parameters.Add(prm_Total, SqlDbType.Float).Value = c.Total;
 
-                parametroSaida = new SqlParameter();
-                parametroSaida.ParameterName = "@STATUS";
-                parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
-                parametroSaida.Direction = System.Data.ParameterDirection.Output;
-                cmd.Parameters.Add(parametroSaida);
+                //parametroSaida = new SqlParameter();
+                //parametroSaida.ParameterName = "@STATUS";
+                //parametroSaida.SqlDbType = System.Data.SqlDbType.Int;
+                //parametroSaida.Direction = System.Data.ParameterDirection.Output;
+                //cmd.Parameters.Add(parametroSaida);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-
-                status = Convert.ToInt32(parametroSaida.Value);
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    status = 1;
+                }
+                catch { status = 0; }
+                //status = Convert.ToInt32(parametroSaida.Value);
 
             }
 
