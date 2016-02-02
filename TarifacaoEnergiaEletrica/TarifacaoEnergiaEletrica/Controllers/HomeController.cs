@@ -207,7 +207,6 @@ namespace TarifacaoEnergiaEletrica.Controllers
                 return RedirectToAction("CadastroConta");
             }
             return RedirectToAction("ListaContas");
-
         }
     }
 }
