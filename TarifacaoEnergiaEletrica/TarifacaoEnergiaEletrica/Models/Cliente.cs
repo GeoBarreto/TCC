@@ -8,6 +8,9 @@ namespace TarifacaoEnergiaEletrica.Models
 {
     class Cliente
     {
-
+        public String nome;
+        public String CNPJ;
+        public String endereço;
+        public List<Fabrica> fabricas=new List<Fabrica>();
     }
 }
