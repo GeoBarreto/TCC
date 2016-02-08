@@ -320,6 +320,46 @@ namespace TarifacaoEnergiaEletrica.Models
 
         }
 
+        public List<ContaModel> ObterUltimaContaCadastrada(int IdFabrica)
+        {
+            List<ContaModel> contas = new List<ContaModel>();
+            //String procNome = "sp_ObterContasPorPeriodo";
+            String procNome = "SELECT MAX(DATA_FIM FROM contas WHERE " + cp_IdFabrica + "=" + prm_IdFabrica + ";";
+            ContaModel c;
+            using (con = ConexaoBD.ObterConexao())
+            {
+                cmd = new SqlCommand(procNome, con);
+                //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.Add(prm_DataInicio, SqlDbType.DateTime).Value = dataInicio;
+                cmd.Parameters.Add(prm_DataFim, SqlDbType.DateTime).Value = dataFim;
+                cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = IdFabrica;
+
+                con.Open();
+                using (SqlDataReader resultado = cmd.ExecuteReader())
+                {
+                    while (resultado.Read())
+                    {
+                        c = new ContaModel();
+                        c.DataReferencia = resultado.GetDateTime(resultado.GetOrdinal(cp_DataReferencia));
+                        c.IdFabrica = resultado.GetInt32(resultado.GetOrdinal(cp_IdFabrica));
+                        c.ConsumoNP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoNP));
+                        c.ConsumoFP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoFP));
+                        c.DemandaTUSD = resultado.GetDouble(resultado.GetOrdinal(cp_DemandaTUSD));
+                        c.ConsumoUltrapassagemNP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoUltrapassagemNP));
+                        c.ConsumoUltrapassagemFP = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoUltrapassagemFP));
+                        c.ConsumoUltrapassagem = resultado.GetDouble(resultado.GetOrdinal(cp_ConsumoUltrapassagem));
+
+                        contas.Add(c);
+                    }
+                }
+            }
+
+            return contas;
+
+        }
+    
         public List<ContaModel> ObterContasModelPorPeriodo(DateTime dataInicio, DateTime dataFim, int IdFabrica)
         {
             List<ContaModel> contas = new List<ContaModel>();
