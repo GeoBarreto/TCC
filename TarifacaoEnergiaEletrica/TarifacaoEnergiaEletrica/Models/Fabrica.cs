@@ -23,5 +23,6 @@ namespace TarifacaoEnergiaEletrica.Models
         [Display(Name = "Distribuidora")]
         [DataType(DataType.Text)]
         public String NomeDistribuidora { get; set; }
+        public String classificação { get; set; }
     }
 }
