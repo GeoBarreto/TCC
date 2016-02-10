@@ -127,15 +127,16 @@
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\ConexaoBD.cs" />
     <Compile Include="Models\Conta.cs" />
-    <Compile Include="Models\ContaDAO.cs" />
+    <Compile Include="Models\DAO\ContaDAO.cs" />
     <Compile Include="Models\ContaModel.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\Distribuidora.cs" />
-    <Compile Include="Models\DistribuidoraDAO.cs" />
+    <Compile Include="Models\DAO\DistribuidoraDAO.cs" />
     <Compile Include="Models\Fabrica.cs" />
-    <Compile Include="Models\FabricaDAO.cs" />
+    <Compile Include="Models\DAO\FabricaDAO.cs" />
     <Compile Include="Models\Usuario.cs" />
-    <Compile Include="Models\UsuarioDAO.cs" />
+    <Compile Include="Models\DAO\UsuarioDAO.cs" />
+    <Compile Include="Models\ViewModels\FabricaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
