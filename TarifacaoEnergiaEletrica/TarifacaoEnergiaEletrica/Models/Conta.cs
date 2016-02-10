@@ -8,8 +8,12 @@ namespace TarifacaoEnergiaEletrica.Models
 {
     public class Conta
     {
+        public double demandaContratada { get; set; }
         public DateTime DataReferencia { get; set; }
         public int IdFabrica { get; set; }
+        public String tipoConta { get; set; }
+        public String bandeiraT { get; set; }
+        public String classificação { get; set; }
         public double ConsumoNP { get; set; }
         public double ConsumoFP { get; set; }
         public double DemandaTUSD { get; set; }

@@ -16,5 +16,6 @@ namespace TarifacaoEnergiaEletrica.Models
         public String Endereco { get; set; }
         public int IdDistribuidora { get; set; }
         public String NomeDistribuidora { get; set; }
+        public String classificação { get; set; }
     }
 }
