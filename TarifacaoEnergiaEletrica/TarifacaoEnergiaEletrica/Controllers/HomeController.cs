@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using TarifacaoEnergiaEletrica.Models;
 using System.Collections;
 using System.Net;
+using TarifacaoEnergiaEletrica.Models.ViewModels;
 
 namespace TarifacaoEnergiaEletrica.Controllers
 {
@@ -66,9 +67,10 @@ namespace TarifacaoEnergiaEletrica.Controllers
 
         public ActionResult CadastroFabrica()
         {
-            List<Distribuidora> d = DistribuidoraDAO.ObterInstancia().ObterDistribuidoras();
-            ViewBag.distribuidoras = new SelectList(d, "IdDistribuidora", "Nome");
-            return View();
+            var d = new List<Distribuidora>(DistribuidoraDAO.ObterInstancia().ObterDistribuidoras());
+            //ViewBag.distribuidoras = new SelectList(d, "IdDistribuidora", "Nome");
+            var viewModel = new FabricaViewModel(d);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -115,7 +117,7 @@ namespace TarifacaoEnergiaEletrica.Controllers
             {
                 return new HttpNotFoundResult();
             }
-            List<Distribuidora> d = DistribuidoraDAO.ObterInstancia().ObterDistribuidoras();
+            var d = DistribuidoraDAO.ObterInstancia().ObterDistribuidoras();
             ViewBag.distribuidoras = new SelectList(d, "IdDistribuidora", "Nome");
             return View(f);
         }

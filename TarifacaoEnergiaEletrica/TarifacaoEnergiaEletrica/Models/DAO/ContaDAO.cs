@@ -332,8 +332,8 @@ namespace TarifacaoEnergiaEletrica.Models
                 //cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.Add(prm_DataInicio, SqlDbType.DateTime).Value = dataInicio;
-                cmd.Parameters.Add(prm_DataFim, SqlDbType.DateTime).Value = dataFim;
+                //cmd.Parameters.Add(prm_DataInicio, SqlDbType.DateTime).Value = dataInicio;
+                //cmd.Parameters.Add(prm_DataFim, SqlDbType.DateTime).Value = dataFim;
                 cmd.Parameters.Add(prm_IdFabrica, SqlDbType.Int).Value = IdFabrica;
 
                 con.Open();

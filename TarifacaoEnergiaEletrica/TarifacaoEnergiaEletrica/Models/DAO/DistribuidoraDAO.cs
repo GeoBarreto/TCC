@@ -32,7 +32,7 @@ namespace TarifacaoEnergiaEletrica.Models
             return instancia;
         }
 
-        public List<Distribuidora> ObterDistribuidoras()
+        public IEnumerable<Distribuidora> ObterDistribuidoras()
         {
             List<Distribuidora> distribuidoras = new List<Distribuidora>();
             //String procNome = "sp_GerenciaFabrica";

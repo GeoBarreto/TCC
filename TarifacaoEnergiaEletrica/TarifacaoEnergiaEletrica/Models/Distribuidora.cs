@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace TarifacaoEnergiaEletrica.Models
 {
-    class Distribuidora
+    public class Distribuidora
     {
         public int IdDistribuidora { get; set; }
         public String Nome { get; set;  }
+        
+        public Distribuidora() { }
     }
 }
